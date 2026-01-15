@@ -92,7 +92,7 @@ export interface Product {
           price: newProduct.price, // Enviar como string "25.50"
           stock: Number(newProduct.stock),
           imageUrl: newProduct.imageUrl || null,
-          category: newProduct.categoryId // El backend espera "category": "id"
+          categoryId: newProduct.categoryId // Identificador de la categoría
         }
         await createProduct(productData)
         await loadData() // Recargar datos
