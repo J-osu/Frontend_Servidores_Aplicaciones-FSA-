@@ -21,7 +21,11 @@ export interface Category {
 export interface Product {
   id: string
   name: string
-  price: number
+  description?: string
+  price: string
+  stock: number
+  imageUrl?: string | null
+  updatedAt?: string
   // El backend devuelve el objeto completo si hay relación
   category?: Category
   categoryId?: string
@@ -39,7 +43,14 @@ export interface Product {
     
     // ... states ...
     
-    const [newProduct, setNewProduct] = useState({ name: "", price: "", categoryId: "" })
+    const [newProduct, setNewProduct] = useState({ 
+      name: "", 
+      description: "", 
+      price: "", 
+      stock: "", 
+      imageUrl: "", 
+      categoryId: "" 
+    })
     const [newCategory, setNewCategory] = useState("")
     const [isMounted, setIsMounted] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -77,12 +88,15 @@ export interface Product {
       try {
         const productData = {
           name: newProduct.name,
-          price: Number.parseFloat(newProduct.price),
+          description: newProduct.description,
+          price: newProduct.price, // Enviar como string "25.50"
+          stock: Number(newProduct.stock),
+          imageUrl: newProduct.imageUrl || null,
           category: newProduct.categoryId // El backend espera "category": "id"
         }
         await createProduct(productData)
         await loadData() // Recargar datos
-        setNewProduct({ name: "", price: "", categoryId: "" })
+        setNewProduct({ name: "", description: "", price: "", stock: "", imageUrl: "", categoryId: "" })
       } catch (error) {
         console.error("Error creating product:", error)
         alert("Error al crear producto")
@@ -184,6 +198,38 @@ export interface Product {
                         onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
                       />
                     </div>
+
+                    
+                    <div className="flex-1 space-y-2">
+                      <Label htmlFor="product-description">Descripción</Label>
+                      <Input
+                        id="product-description"
+                        placeholder="Descripción del producto"
+                        value={newProduct.description}
+                        onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+                      />
+                    </div>
+                    <div className="w-full sm:w-32 space-y-2">
+                       <Label htmlFor="product-stock">Stock</Label>
+                       <Input
+                         id="product-stock"
+                         type="number"
+                         min="0"
+                         placeholder="0"
+                         value={newProduct.stock}
+                         onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })}
+                       />
+                    </div>
+                    <div className="w-full sm:w-48 space-y-2">
+                       <Label htmlFor="product-image">Imagen URL</Label>
+                       <Input
+                         id="product-image"
+                         placeholder="https://..."
+                         value={newProduct.imageUrl}
+                         onChange={(e) => setNewProduct({ ...newProduct, imageUrl: e.target.value })}
+                       />
+                    </div>
+
                     <div className="w-full sm:w-32 space-y-2">
                       <Label htmlFor="product-price">Precio</Label>
                       <Input
@@ -257,4 +303,3 @@ export interface Product {
       </div>
     )
   }
-
