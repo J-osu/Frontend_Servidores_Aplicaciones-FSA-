@@ -143,7 +143,7 @@ export interface Product {
       <div className="min-h-screen bg-background">
         <header className="border-b border-border bg-card">
           <div className="container mx-auto px-6 py-4">
-            <h1 className="text-2xl font-bold text-foreground">Panel de Administración</h1>
+            <h1 className="text-2xl font-bold text-foreground">Panel de Administración de Productos & Categorias</h1>
             <p className="text-sm text-muted-foreground">Gestiona tus productos y categorías</p>
           </div>
         </header>
