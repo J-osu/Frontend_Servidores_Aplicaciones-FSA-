@@ -181,7 +181,7 @@ export interface Product {
               <TabsTrigger value="categories">Categorías</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="products" className="space-y-6">
+            {/* <TabsContent value="products" className="space-y-6">
               <Card className="border-border">
                 <CardHeader>
                   <CardTitle>Añadir Nuevo Producto</CardTitle>
@@ -269,7 +269,7 @@ export interface Product {
               </Card>
 
               <ProductList products={products} categories={categories} onDelete={handleDeleteProduct} />
-            </TabsContent>
+            </TabsContent> */}
 
             <TabsContent value="categories" className="space-y-6">
               <Card className="border-border">
