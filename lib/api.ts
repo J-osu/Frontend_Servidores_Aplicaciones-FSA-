@@ -20,7 +20,11 @@ export async function createProduct(data: any) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error('Failed to create product');
+  if (!res.ok) {
+    const errorBody = await res.text();
+    console.error('Failed to create product. Status:', res.status, 'Body:', errorBody);
+    throw new Error(`Failed to create product: ${errorBody}`);
+  }
   return res.json();
 }
 
