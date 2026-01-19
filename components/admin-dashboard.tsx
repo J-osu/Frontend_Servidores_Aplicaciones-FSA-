@@ -182,7 +182,7 @@ export interface Product {
             </TabsList>
 
             <TabsContent value="products" className="space-y-6">
-              {/* <Card className="border-border">
+              <Card className="border-border">
                 <CardHeader>
                   <CardTitle>Añadir Nuevo Producto</CardTitle>
                   <CardDescription>Completa los campos para registrar un producto</CardDescription>
@@ -266,7 +266,7 @@ export interface Product {
                     </Button>
                   </form>
                 </CardContent>
-              </Card> */}
+              </Card>
 
               <ProductList products={products} categories={categories} onDelete={handleDeleteProduct} />
             </TabsContent>
