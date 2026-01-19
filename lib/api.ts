@@ -15,6 +15,7 @@ export async function fetchCategories() {
 }
 
 export async function createProduct(data: any) {
+  console.log('Creating product with data:', JSON.stringify(data, null, 2));
   const res = await fetch(`${API_URL}/products/create_product`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

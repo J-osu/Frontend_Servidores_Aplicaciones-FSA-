@@ -89,10 +89,10 @@ export interface Product {
         const productData = {
           name: newProduct.name,
           description: newProduct.description,
-          price: newProduct.price, // Enviar como string "25.50"
+          price: Number(newProduct.price), // Enviar como número
           stock: Number(newProduct.stock),
           imageUrl: newProduct.imageUrl || null,
-          categoryId: newProduct.categoryId // Identificador de la categoría
+          category: newProduct.categoryId // Cambiado de categoryId a category
         }
         await createProduct(productData)
         await loadData() // Recargar datos
