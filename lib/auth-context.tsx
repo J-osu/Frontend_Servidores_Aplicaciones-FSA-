@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useLayoutEffect } from 'react';
 import { loginUser } from './api';
 
 interface AuthContextType {
@@ -24,7 +24,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   // Verificar si el usuario está logueado al montar el componente
-  useEffect(() => {
+  useLayoutEffect(() => {
     const savedUsername = localStorage.getItem('adminUsername');
     const savedEmail = localStorage.getItem('adminEmail');
     const savedRole = localStorage.getItem('adminRole');
