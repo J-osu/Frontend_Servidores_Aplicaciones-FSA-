@@ -1,96 +1,39 @@
-
-const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://api.ferremat.es').replace(/\/$/, '');
+import { apiPost, apiGet, apiPut, apiDelete } from './api-client';
 
 export async function loginUser(email: string, password: string) {
-  const res = await fetch(`${API_URL}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
-  });
-  if (!res.ok) {
-    const errorBody = await res.text();
-    throw new Error(`Failed to login: ${errorBody}`);
-  }
-  return res.json();
+  return apiPost('/auth/login', { email, password });
 }
 
 export async function fetchProducts() {
-  const res = await fetch(`${API_URL}/products/list_products`);
-  if (!res.ok) throw new Error('Failed to fetch products');
-  return res.json();
+  return apiGet('/products/list_products');
 }
 
 export async function fetchCategories() {
-  const res = await fetch(`${API_URL}/products/list_categories`);
-  // Note: Adjust endpoint if it differs, based on controller it is list_categories
-  if (!res.ok) throw new Error('Failed to fetch categories');
-  return res.json();
+  return apiGet('/products/list_categories');
 }
 
 export async function createProduct(data: any) {
-  console.log('Creating product with data:', JSON.stringify(data, null, 2));
-  const res = await fetch(`${API_URL}/products/create_product`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) {
-    const errorBody = await res.text();
-    console.error('Failed to create product. Status:', res.status, 'Body:', errorBody);
-    throw new Error(`Failed to create product: ${errorBody}`);
-  }
-  return res.json();
+  return apiPost('/products/create_product', data);
 }
 
 export async function updateProduct(id: string, data: any) {
-  const res = await fetch(`${API_URL}/products/update_product/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) {
-    const errorBody = await res.text();
-    console.error('Failed to update product. Status:', res.status, 'Body:', errorBody);
-    throw new Error(`Failed to update product: ${errorBody}`);
-  }
-  return res.json();
+  return apiPut(`/products/update_product/${id}`, data);
 }
 
 export async function deleteProduct(id: string) {
-    // Note: The controller uses query params for delete: ?id=...
-  const res = await fetch(`${API_URL}/products/delete_product?id=${id}`, {
-    method: 'DELETE',
-  });
-  if (!res.ok) throw new Error('Failed to delete product');
-  return res.json();
+  return apiDelete(`/products/delete_product?id=${id}`);
 }
 
 export async function createCategory(data: any) {
-  const res = await fetch(`${API_URL}/products/create_category`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) {
-    const errorBody = await res.text();
-    console.error('Failed to create category. Status:', res.status, 'Body:', errorBody);
-    throw new Error(`Failed to create category: ${errorBody}`);
-  }
-  return res.json();
+  return apiPost('/products/create_category', data);
 }
 
 export async function deleteCategory(id: string) {
-  const res = await fetch(`${API_URL}/products/delete_category?id=${id}`, {
-    method: 'DELETE',
-  });
-  if (!res.ok) throw new Error('Failed to delete category');
-  return res.json();
+  return apiDelete(`/products/delete_category?id=${id}`);
 }
 
 export async function fetchUsers() {
-  const res = await fetch(`${API_URL}/users/listar_usuarios`);
-  if (!res.ok) throw new Error('Failed to fetch users');
-  return res.json();
+  return apiGet('/users/listar_usuarios');
 }
 
 export async function getUsersCount() {
@@ -99,49 +42,23 @@ export async function getUsersCount() {
 }
 
 export async function fetchUserById(id: string) {
-  const res = await fetch(`${API_URL}/users/${id}`);
-  if (!res.ok) throw new Error('Failed to fetch user');
-  return res.json();
+  return apiGet(`/users/${id}`);
 }
 
 export async function createUser(data: any) {
-  const res = await fetch(`${API_URL}/users/create_user`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) {
-    const errorBody = await res.text();
-    throw new Error(`Failed to create user: ${errorBody}`);
-  }
-  return res.json();
+  return apiPost('/users/create_user', data);
 }
 
 export async function updateUser(id: string, data: any) {
-  const res = await fetch(`${API_URL}/users/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) {
-    const errorBody = await res.text();
-    throw new Error(`Failed to update user: ${errorBody}`);
-  }
-  return res.json();
+  return apiPut(`/users/${id}`, data);
 }
 
 export async function deleteUser(id: string) {
-  const res = await fetch(`${API_URL}/users/${id}`, {
-    method: 'DELETE',
-  });
-  if (!res.ok) throw new Error('Failed to delete user');
-  return res.json();
+  return apiDelete(`/users/${id}`);
 }
 
 export async function fetchOrders() {
-  const res = await fetch(`${API_URL}/orders/list_orders`);
-  if (!res.ok) throw new Error('Failed to fetch orders');
-  return res.json();
+  return apiGet('/orders/list_orders');
 }
 
 export async function getPendingOrdersCount() {
@@ -150,63 +67,29 @@ export async function getPendingOrdersCount() {
 }
 
 export async function fetchOrdersByUser(userId: string) {
-  const res = await fetch(`${API_URL}/orders/user/${userId}`);
-  if (!res.ok) throw new Error('Failed to fetch user orders');
-  return res.json();
+  return apiGet(`/orders/user/${userId}`);
 }
 
 export async function fetchOrderById(id: string) {
-  const res = await fetch(`${API_URL}/orders/${id}`);
-  if (!res.ok) throw new Error('Failed to fetch order');
-  return res.json();
+  return apiGet(`/orders/${id}`);
 }
 
 export async function updateOrderStatus(id: string, status: string) {
-  const res = await fetch(`${API_URL}/orders/update_status`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id, status }),
-  });
-  if (!res.ok) throw new Error('Failed to update order status');
-  return res.json();
+  return apiPut('/orders/update_status', { id, status });
 }
 
 export async function fetchProfiles() {
-  const res = await fetch(`${API_URL}/profile/list_profiles`);
-  if (!res.ok) throw new Error('Failed to fetch profiles');
-  return res.json();
+  return apiGet('/profile/list_profiles');
 }
 
 export async function createProfile(data: any) {
-  const res = await fetch(`${API_URL}/profile/create_profile`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) {
-    const errorBody = await res.text();
-    throw new Error(`Failed to create profile: ${errorBody}`);
-  }
-  return res.json();
+  return apiPost('/profile/create_profile', data);
 }
 
 export async function updateProfile(id: string, data: any) {
-  const res = await fetch(`${API_URL}/profile/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) {
-    const errorBody = await res.text();
-    throw new Error(`Failed to update profile: ${errorBody}`);
-  }
-  return res.json();
+  return apiPut(`/profile/${id}`, data);
 }
 
 export async function deleteProfile(id: string) {
-  const res = await fetch(`${API_URL}/profile/${id}`, {
-    method: 'DELETE',
-  });
-  if (!res.ok) throw new Error('Failed to delete profile');
-  return res.json();
+  return apiDelete(`/profile/${id}`);
 }
