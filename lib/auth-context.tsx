@@ -22,15 +22,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [email, setEmail] = useState<string | null>(null);
   const [role, setRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const savedUsername = localStorage.getItem('adminUsername');
     const savedEmail = localStorage.getItem('adminEmail');
     const savedRole = localStorage.getItem('adminRole');
     const savedToken = localStorage.getItem('adminToken');
 
-    if (savedUsername && savedEmail && savedToken && savedRole === 'admin') {
+    const isValidSession = savedUsername && savedEmail && savedToken && savedRole === 'admin';
+
+    if (isValidSession) {
       setUsername(savedUsername);
       setEmail(savedEmail);
       setRole(savedRole);
@@ -41,8 +44,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.removeItem('adminRole');
       localStorage.removeItem('adminToken');
       localStorage.removeItem('adminUserId');
+      localStorage.removeItem('adminAuthTime');
     }
-    setIsMounted(true);
+
     setIsLoading(false);
   }, []);
 
