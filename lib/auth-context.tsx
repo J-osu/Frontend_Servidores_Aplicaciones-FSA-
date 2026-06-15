@@ -24,43 +24,53 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const initAuth = async () => {
-      if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined') {
+      setIsLoading(false);
+      return;
+    }
 
-      try {
-        const savedUsername = localStorage.getItem('adminUsername');
-        const savedEmail = localStorage.getItem('adminEmail');
-        const savedRole = localStorage.getItem('adminRole');
-        const savedToken = localStorage.getItem('adminToken');
+    try {
+      const savedUsername = localStorage.getItem('adminUsername');
+      const savedEmail = localStorage.getItem('adminEmail');
+      const savedRole = localStorage.getItem('adminRole');
+      const savedToken = localStorage.getItem('adminToken');
 
-        const isValidSession = savedUsername && savedEmail && savedToken && savedRole === 'admin';
+      console.log('[AUTH] Loading session from localStorage:', {
+        hasUsername: !!savedUsername,
+        hasEmail: !!savedEmail,
+        hasRole: !!savedRole,
+        hasToken: !!savedToken,
+        role: savedRole,
+      });
 
-        if (isValidSession) {
-          setUsername(savedUsername);
-          setEmail(savedEmail);
-          setRole(savedRole);
-          setIsLoggedIn(true);
-        } else {
-          localStorage.removeItem('adminUsername');
-          localStorage.removeItem('adminEmail');
-          localStorage.removeItem('adminRole');
-          localStorage.removeItem('adminToken');
-          localStorage.removeItem('adminUserId');
-          localStorage.removeItem('adminAuthTime');
-          setIsLoggedIn(false);
-          setUsername(null);
-          setEmail(null);
-          setRole(null);
-        }
-      } catch (error) {
-        console.error('Error loading auth session:', error);
+      const isValidSession = !!(savedUsername && savedEmail && savedToken && savedRole === 'admin');
+
+      if (isValidSession) {
+        console.log('[AUTH] Valid session found, restoring user:', savedUsername);
+        setUsername(savedUsername);
+        setEmail(savedEmail);
+        setRole(savedRole);
+        setIsLoggedIn(true);
+      } else {
+        console.log('[AUTH] No valid session found, clearing localStorage');
+        localStorage.removeItem('adminUsername');
+        localStorage.removeItem('adminEmail');
+        localStorage.removeItem('adminRole');
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUserId');
+        localStorage.removeItem('adminAuthTime');
         setIsLoggedIn(false);
-      } finally {
-        setIsLoading(false);
+        setUsername(null);
+        setEmail(null);
+        setRole(null);
       }
-    };
-
-    initAuth();
+    } catch (error) {
+      console.error('[AUTH] Error loading session:', error);
+      setIsLoggedIn(false);
+    } finally {
+      console.log('[AUTH] Auth initialization complete');
+      setIsLoading(false);
+    }
   }, []);
 
   const login = async (inputEmail: string, inputPassword: string): Promise<{ success: boolean; message?: string }> => {
