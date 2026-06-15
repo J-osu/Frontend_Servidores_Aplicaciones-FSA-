@@ -401,7 +401,7 @@ export function AdminDashboard() {
       </div>
 
       <div className="flex flex-1 flex-col overflow-hidden">
-        <Navbar />
+        <Navbar onNavClick={setActiveTab} />
 
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8">
           <div className="mx-auto max-w-7xl">

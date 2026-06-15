@@ -1,6 +1,6 @@
 "use client"
 
-import { Bell, Search, User, Moon, Sun, LogOut } from "lucide-react"
+import { Bell, Search, User, Moon, Sun, LogOut, Menu } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/lib/auth-context"
@@ -15,8 +15,27 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Separator } from "@/components/ui/separator"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Home, Package, FolderTree, Users, UserCheck, ShoppingCart, Settings } from "lucide-react"
+import { cn } from "@/lib/utils"
 
-export function Navbar() {
+const navItems = [
+  { id: "dashboard", label: "Dashboard", icon: Home },
+  { id: "products", label: "Productos", icon: Package },
+  { id: "categories", label: "Categorías", icon: FolderTree },
+  { id: "users", label: "Usuarios", icon: Users },
+  { id: "profiles", label: "Perfiles", icon: UserCheck },
+  { id: "orders", label: "Pedidos", icon: ShoppingCart },
+]
+
+interface NavbarProps {
+  onNavClick?: (tabId: string) => void
+}
+
+export function Navbar({ onNavClick }: NavbarProps) {
   const { theme, setTheme } = useTheme()
   const { logout, username } = useAuth()
   const router = useRouter()
@@ -27,7 +46,56 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b bg-background/80 px-4 sm:px-6 backdrop-blur-md">
+    <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b bg-background/80 px-4 sm:px-6 backdrop-blur-md">
+      {/* Mobile Menu */}
+      <Sheet>
+        <SheetTrigger asChild className="md:hidden">
+          <Button variant="ghost" size="icon" className="md:hidden">
+            <Menu className="h-5 w-5" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-64 p-0">
+          <div className="flex h-full flex-col">
+            <div className="flex h-16 items-center px-6 border-b">
+              <span className="text-xl font-bold tracking-tight text-primary">Ferremat <span className="text-foreground">Admin</span></span>
+            </div>
+            <ScrollArea className="flex-1 py-4">
+              <nav className="grid gap-1 px-2">
+                {navItems.map((item) => {
+                  const Icon = item.icon
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => {
+                        onNavClick?.(item.id)
+                        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+                      }}
+                      className="flex h-11 items-center rounded-md px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground justify-start gap-3 text-muted-foreground"
+                    >
+                      <Icon className="h-5 w-5 shrink-0" />
+                      <span>{item.label}</span>
+                    </button>
+                  )
+                })}
+              </nav>
+            </ScrollArea>
+            <div className="mt-auto p-4 flex flex-col gap-2 border-t">
+              <button className="flex h-11 items-center rounded-md px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground justify-start gap-3">
+                <Settings className="h-5 w-5" />
+                <span>Configuración</span>
+              </button>
+              <button
+                onClick={handleLogout}
+                className="flex h-11 items-center rounded-md px-3 text-sm font-medium text-destructive transition-colors hover:bg-destructive/10 justify-start gap-3"
+              >
+                <LogOut className="h-5 w-5" />
+                <span>Cerrar Sesión</span>
+              </button>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+
       <div className="flex flex-1 max-w-sm items-center space-x-2">
         <div className="relative w-full hidden sm:block">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />

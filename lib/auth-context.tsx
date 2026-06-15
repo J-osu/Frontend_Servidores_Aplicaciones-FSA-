@@ -24,30 +24,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    const initAuth = async () => {
+      if (typeof window === 'undefined') return;
 
-    const savedUsername = localStorage.getItem('adminUsername');
-    const savedEmail = localStorage.getItem('adminEmail');
-    const savedRole = localStorage.getItem('adminRole');
-    const savedToken = localStorage.getItem('adminToken');
+      try {
+        const savedUsername = localStorage.getItem('adminUsername');
+        const savedEmail = localStorage.getItem('adminEmail');
+        const savedRole = localStorage.getItem('adminRole');
+        const savedToken = localStorage.getItem('adminToken');
 
-    const isValidSession = savedUsername && savedEmail && savedToken && savedRole === 'admin';
+        const isValidSession = savedUsername && savedEmail && savedToken && savedRole === 'admin';
 
-    if (isValidSession) {
-      setUsername(savedUsername);
-      setEmail(savedEmail);
-      setRole(savedRole);
-      setIsLoggedIn(true);
-    } else {
-      localStorage.removeItem('adminUsername');
-      localStorage.removeItem('adminEmail');
-      localStorage.removeItem('adminRole');
-      localStorage.removeItem('adminToken');
-      localStorage.removeItem('adminUserId');
-      localStorage.removeItem('adminAuthTime');
-    }
+        if (isValidSession) {
+          setUsername(savedUsername);
+          setEmail(savedEmail);
+          setRole(savedRole);
+          setIsLoggedIn(true);
+        } else {
+          localStorage.removeItem('adminUsername');
+          localStorage.removeItem('adminEmail');
+          localStorage.removeItem('adminRole');
+          localStorage.removeItem('adminToken');
+          localStorage.removeItem('adminUserId');
+          localStorage.removeItem('adminAuthTime');
+          setIsLoggedIn(false);
+          setUsername(null);
+          setEmail(null);
+          setRole(null);
+        }
+      } catch (error) {
+        console.error('Error loading auth session:', error);
+        setIsLoggedIn(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    setIsLoading(false);
+    initAuth();
   }, []);
 
   const login = async (inputEmail: string, inputPassword: string): Promise<{ success: boolean; message?: string }> => {
