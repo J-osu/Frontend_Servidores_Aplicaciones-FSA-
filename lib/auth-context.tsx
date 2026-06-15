@@ -33,17 +33,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const savedUsername = localStorage.getItem('adminUsername');
       const savedEmail = localStorage.getItem('adminEmail');
       const savedRole = localStorage.getItem('adminRole');
-      const savedToken = localStorage.getItem('adminToken');
 
       console.log('[AUTH] Loading session from localStorage:', {
         hasUsername: !!savedUsername,
         hasEmail: !!savedEmail,
         hasRole: !!savedRole,
-        hasToken: !!savedToken,
         role: savedRole,
       });
 
-      const isValidSession = !!(savedUsername && savedEmail && savedToken && savedRole === 'admin');
+      const isValidSession = !!(savedUsername && savedEmail && savedRole === 'admin');
 
       if (isValidSession) {
         console.log('[AUTH] Valid session found, restoring user:', savedUsername);
