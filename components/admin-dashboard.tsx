@@ -103,53 +103,53 @@ export function AdminDashboard() {
               <p className="text-muted-foreground">Bienvenido de nuevo. Aquí tienes un resumen de tu tienda.</p>
             </div>
             
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
               <Card className="border-none shadow-premium hover:shadow-premium-hover transition-all duration-300">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Total Productos</CardTitle>
+                  <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">Total Productos</CardTitle>
                   <Package className="h-5 w-5 text-primary" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold">{products.length}</div>
+                  <div className="text-2xl sm:text-3xl font-bold">{products.length}</div>
                   <p className="text-xs text-muted-foreground mt-1">productos registrados</p>
                 </CardContent>
               </Card>
 
               <Card className="border-none shadow-premium hover:shadow-premium-hover transition-all duration-300">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Total Categorías</CardTitle>
+                  <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">Total Categorías</CardTitle>
                   <FolderTree className="h-5 w-5 text-primary" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold">{categories.length}</div>
+                  <div className="text-2xl sm:text-3xl font-bold">{categories.length}</div>
                   <p className="text-xs text-muted-foreground mt-1">categorías activas</p>
                 </CardContent>
               </Card>
 
               <Card className="border-none shadow-premium hover:shadow-premium-hover transition-all duration-300 border-l-4 border-l-primary/50">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Usuarios Registrados</CardTitle>
+                  <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">Usuarios Registrados</CardTitle>
                   <Users className="h-5 w-5 text-primary" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold">{usersCount}</div>
+                  <div className="text-2xl sm:text-3xl font-bold">{usersCount}</div>
                   <p className="text-xs text-emerald-500 mt-1">usuarios activos en el sistema</p>
                 </CardContent>
               </Card>
 
               <Card className="border-none shadow-premium hover:shadow-premium-hover transition-all duration-300">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Pedidos Pendientes</CardTitle>
+                  <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">Pedidos Pendientes</CardTitle>
                   <ShoppingCart className="h-5 w-5 text-primary" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold">{pendingOrdersCount}</div>
+                  <div className="text-2xl sm:text-3xl font-bold">{pendingOrdersCount}</div>
                   <p className="text-xs text-amber-500 mt-1">Requieren atención pronto</p>
                 </CardContent>
               </Card>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-7">
+            <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-7">
                <Card className="md:col-span-4 border-none shadow-premium">
                   <CardHeader>
                     <CardTitle>Ventas Semanales</CardTitle>
@@ -236,31 +236,31 @@ export function AdminDashboard() {
                 <CardDescription>Completa los campos para registrar un producto en el sistema.</CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleAddProduct} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <form onSubmit={handleAddProduct} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="product-name">Nombre</Label>
-                    <Input id="product-name" placeholder="Ej: Taladro Percutor 500W" value={newProduct.name} onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })} />
+                    <Label htmlFor="product-name" className="text-sm">Nombre</Label>
+                    <Input id="product-name" placeholder="Ej: Taladro Percutor 500W" value={newProduct.name} onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })} className="text-sm" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="product-description">Descripción</Label>
-                    <Input id="product-description" placeholder="Breve detalle del producto" value={newProduct.description} onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })} />
+                    <Label htmlFor="product-description" className="text-sm">Descripción</Label>
+                    <Input id="product-description" placeholder="Breve detalle del producto" value={newProduct.description} onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })} className="text-sm" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="product-price">Precio (€)</Label>
-                    <Input id="product-price" type="number" step="0.01" placeholder="0.00" value={newProduct.price} onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })} />
+                    <Label htmlFor="product-price" className="text-sm">Precio (€)</Label>
+                    <Input id="product-price" type="number" step="0.01" placeholder="0.00" value={newProduct.price} onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })} className="text-sm" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="product-stock">Stock</Label>
-                    <Input id="product-stock" type="number" placeholder="0" value={newProduct.stock} onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })} />
+                    <Label htmlFor="product-stock" className="text-sm">Stock</Label>
+                    <Input id="product-stock" type="number" placeholder="0" value={newProduct.stock} onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })} className="text-sm" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="product-image">URL de Imagen</Label>
-                    <Input id="product-image" placeholder="https://..." value={newProduct.imageUrl} onChange={(e) => setNewProduct({ ...newProduct, imageUrl: e.target.value })} />
+                    <Label htmlFor="product-image" className="text-sm">URL de Imagen</Label>
+                    <Input id="product-image" placeholder="https://..." value={newProduct.imageUrl} onChange={(e) => setNewProduct({ ...newProduct, imageUrl: e.target.value })} className="text-sm" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="product-category">Categoría</Label>
+                    <Label htmlFor="product-category" className="text-sm">Categoría</Label>
                     <Select value={newProduct.categoryId} onValueChange={(value) => setNewProduct({ ...newProduct, categoryId: value })}>
-                      <SelectTrigger id="product-category">
+                      <SelectTrigger id="product-category" className="text-sm">
                         <SelectValue placeholder="Seleccionar..." />
                       </SelectTrigger>
                       <SelectContent>
@@ -270,8 +270,8 @@ export function AdminDashboard() {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="lg:col-span-3 flex justify-end">
-                    <Button type="submit" disabled={loading || isSubmitting} className="px-8 shadow-sm">
+                  <div className="sm:col-span-2 lg:col-span-3 flex justify-end">
+                    <Button type="submit" disabled={loading || isSubmitting} className="px-6 sm:px-8 shadow-sm text-sm">
                       <Plus className="h-4 w-4 mr-2" />
                       {isSubmitting ? 'Guardando...' : 'Registrar Producto'}
                     </Button>
@@ -295,12 +295,12 @@ export function AdminDashboard() {
                 <CardDescription>Define una nueva agrupación para tus productos.</CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleAddCategory} className="flex gap-4">
+                <form onSubmit={handleAddCategory} className="flex flex-col sm:flex-row gap-4 sm:gap-2">
                   <div className="flex-1 space-y-2">
-                    <Label htmlFor="category-name">Nombre</Label>
-                    <Input id="category-name" placeholder="Ej: Herramientas Manuales" value={newCategory} onChange={(e) => setNewCategory(e.target.value)} />
+                    <Label htmlFor="category-name" className="text-sm">Nombre</Label>
+                    <Input id="category-name" placeholder="Ej: Herramientas Manuales" value={newCategory} onChange={(e) => setNewCategory(e.target.value)} className="text-sm" />
                   </div>
-                  <Button type="submit" disabled={loading || isSubmitting} className="mt-8">
+                  <Button type="submit" disabled={loading || isSubmitting} className="mt-0 sm:mt-8 text-sm">
                     <Plus className="h-4 w-4 mr-2" />
                     {isSubmitting ? 'Creando...' : 'Añadir'}
                   </Button>
@@ -395,13 +395,15 @@ export function AdminDashboard() {
   }
 
   return (
-    <div className="flex h-screen bg-background overflow-hidden">
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-      
+    <div className="flex flex-col md:flex-row min-h-screen bg-background">
+      <div className="hidden md:flex md:flex-col">
+        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      </div>
+
       <div className="flex flex-1 flex-col overflow-hidden">
         <Navbar />
-        
-        <main className="flex-1 overflow-y-auto p-6 md:p-8">
+
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8">
           <div className="mx-auto max-w-7xl">
             {renderContent()}
           </div>

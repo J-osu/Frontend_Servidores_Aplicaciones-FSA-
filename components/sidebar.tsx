@@ -1,12 +1,15 @@
 "use client"
 
 import * as React from "react"
-import { Home, Package, FolderTree, Users, UserCheck, ShoppingCart, Settings, ChevronLeft, ChevronRight, LogOut } from "lucide-react"
+import { Home, Package, FolderTree, Users, UserCheck, ShoppingCart, Settings, ChevronLeft, ChevronRight, LogOut, Menu } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { useAuth } from "@/lib/auth-context"
+import { useRouter } from "next/navigation"
 
 interface SidebarProps {
   activeTab: string
@@ -22,16 +25,17 @@ const navItems = [
   { id: "orders", label: "Pedidos", icon: ShoppingCart },
 ]
 
-export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
-  const [isCollapsed, setIsCollapsed] = React.useState(false)
+const SidebarContent = ({ activeTab, setActiveTab, isCollapsed = false }: { activeTab: string; setActiveTab: (tab: string) => void; isCollapsed?: boolean }) => {
+  const { logout } = useAuth()
+  const router = useRouter()
+
+  const handleLogout = () => {
+    logout()
+    router.push('/login')
+  }
 
   return (
-    <div 
-      className={cn(
-        "relative flex flex-col border-r bg-card transition-all duration-300 ease-in-out",
-        isCollapsed ? "w-20" : "w-64"
-      )}
-    >
+    <>
       <div className="flex h-16 items-center px-6">
         {!isCollapsed && (
           <span className="text-xl font-bold tracking-tight text-primary">Ferremat <span className="text-foreground">Admin</span></span>
@@ -89,6 +93,7 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
           {!isCollapsed && <span>Configuración</span>}
         </button>
         <button
+          onClick={handleLogout}
           className={cn(
             "flex h-11 items-center rounded-md px-3 text-sm font-medium text-destructive transition-colors hover:bg-destructive/10",
             isCollapsed ? "justify-center" : "justify-start gap-3"
@@ -98,15 +103,46 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
           {!isCollapsed && <span>Cerrar Sesión</span>}
         </button>
       </div>
+    </>
+  )
+}
 
-      <Button
-        variant="ghost"
-        size="icon"
-        className="absolute -right-4 top-20 h-8 w-8 rounded-full border bg-background shadow-sm"
-        onClick={() => setIsCollapsed(!isCollapsed)}
+export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
+  const [isCollapsed, setIsCollapsed] = React.useState(false)
+
+  return (
+    <>
+      {/* Desktop Sidebar */}
+      <div
+        className={cn(
+          "hidden md:flex relative flex-col border-r bg-card transition-all duration-300 ease-in-out",
+          isCollapsed ? "w-20" : "w-64"
+        )}
       >
-        {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-      </Button>
-    </div>
+        <SidebarContent activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isCollapsed} />
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute -right-4 top-20 h-8 w-8 rounded-full border bg-background shadow-sm hidden lg:flex"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+        >
+          {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+        </Button>
+      </div>
+
+      {/* Mobile Sidebar */}
+      <Sheet>
+        <SheetTrigger asChild className="md:hidden">
+          <Button variant="ghost" size="icon" className="md:hidden">
+            <Menu className="h-5 w-5" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-64 p-0">
+          <div className="flex h-full flex-col">
+            <SidebarContent activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={false} />
+          </div>
+        </SheetContent>
+      </Sheet>
+    </>
   )
 }

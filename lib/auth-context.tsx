@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useLayoutEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { loginUser } from './api';
 
 interface AuthContextType {
@@ -22,9 +22,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [email, setEmail] = useState<string | null>(null);
   const [role, setRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Verificar si el usuario está logueado al montar el componente
-  useLayoutEffect(() => {
+  useEffect(() => {
     const savedUsername = localStorage.getItem('adminUsername');
     const savedEmail = localStorage.getItem('adminEmail');
     const savedRole = localStorage.getItem('adminRole');
@@ -36,13 +36,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setRole(savedRole);
       setIsLoggedIn(true);
     } else {
-      // Si no es admin o no hay token, limpiar localStorage
       localStorage.removeItem('adminUsername');
       localStorage.removeItem('adminEmail');
       localStorage.removeItem('adminRole');
       localStorage.removeItem('adminToken');
       localStorage.removeItem('adminUserId');
     }
+    setIsMounted(true);
     setIsLoading(false);
   }, []);
 
