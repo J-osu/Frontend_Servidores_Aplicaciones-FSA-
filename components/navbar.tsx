@@ -27,19 +27,19 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b bg-background/80 px-6 backdrop-blur-md">
-      <div className="flex w-full max-w-sm items-center space-x-2">
-        <div className="relative w-full">
+    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b bg-background/80 px-4 sm:px-6 backdrop-blur-md">
+      <div className="flex flex-1 max-w-sm items-center space-x-2">
+        <div className="relative w-full hidden sm:block">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
             placeholder="Buscar..."
-            className="w-full bg-muted/50 pl-9 md:w-[300px] lg:w-[400px] transition-all focus:bg-background"
+            className="w-full bg-muted/50 pl-9 md:w-[300px] lg:w-[400px] transition-all focus:bg-background text-sm"
           />
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4">
         <Button
           variant="ghost"
           size="icon"
